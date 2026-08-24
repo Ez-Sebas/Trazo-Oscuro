@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import imagen1 from '../assets/images/imagen1.jpg'
 import imagen2 from '../assets/images/imagen2.jpg'
 import imagen3 from '../assets/images/imagen3.jpg'
@@ -27,18 +27,39 @@ const galeria = [
 
 export const Carousel = () => {
     const [indice, setIndice] = useState(0)
+    const [enPausa, setEnPausa] = useState(false)
+
     const anterior = () => {
         setIndice(indice === 0 ? galeria.length - 1 : indice - 1)
     }
+
     const siguiente = () => {
-        setIndice(indice === galeria.length - 1 ? 0 : indice + 1)
+        setIndice((prev) => (prev === galeria.length - 1 ? 0 : prev + 1))
     }
+
+    useEffect(() => {
+        if (enPausa) return
+
+        const intervalo = setInterval(() => {
+            siguiente()
+        }, 4500)
+
+        return () => clearInterval(intervalo)
+    }, [indice, enPausa])
+
     return (
-        <div className="relative w-full h-[80vh] sm:h-[80vh] md:h-screen overflow-hidden">
+        <div
+            className="relative w-full h-[70vh] sm:h-[80vh] md:h-screen overflow-hidden"
+            onMouseEnter={() => setEnPausa(true)}
+            onMouseLeave={() => setEnPausa(false)}
+        >
+
             {galeria.map((item, i) => (
                 <div key={item.id} className={`absolute inset-0 transition-opacity duration-700 ${i === indice ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                    <img src={item.img} alt={item.titulo} className="w-full h-full object-cover"/>
-                    <div className="absolute inset-0 bg-linear-to-t from-fondo via-fondo/50 to-transparent"/>
+                    <img src={item.img} alt={item.titulo} className="w-full h-full object-cover" />
+
+                    <div className="absolute inset-0 bg-linear-to-t from-fondo via-fondo/50 to-transparent" />
+
                     <div className="absolute bottom-20 sm:bottom-16 left-0 w-full px-6">
                         <div className="max-w-6xl mx-auto">
                             <h2 className="text-texto font-serif text-xl sm:text-3xl md:text-5xl mb-2 sm:mb-3">
@@ -51,21 +72,27 @@ export const Carousel = () => {
                     </div>
                 </div>
             ))}
+
             <button
                 onClick={anterior}
-                className="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 bg-fondo/60 hover:bg-acento/60 text-texto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-2xl transition-colors z-10 cursor-pointer">
+                className="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 bg-fondo/60 hover:bg-acento/60 text-texto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-2xl transition-colors z-10 cursor-pointer"
+            >
                 <img src={arrowL} alt="Anterior" className='h-3 w-3 sm:h-4 sm:w-4' />
             </button>
+
             <button
                 onClick={siguiente}
-                className="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 bg-fondo/60 hover:bg-acento/60 text-texto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-2xl transition-colors z-10 cursor-pointer">
+                className="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 bg-fondo/60 hover:bg-acento/60 text-texto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-2xl transition-colors z-10 cursor-pointer"
+            >
                 <img src={arrowR} alt="Siguiente" className='h-3 w-3 sm:h-4 sm:w-4' />
             </button>
+
             <div className="absolute bottom-6 left-0 w-full flex justify-center gap-2 z-10">
                 {galeria.map((item, i) => (
-                    <button key={item.id} onClick={() => setIndice(i)} className={`h-2 rounded-full transition-all duration-500 hover:-translate-y-1 ${i === indice ? 'w-8 bg-acento' : 'w-2 bg-texto-secundario cursor-pointer'}`}/>
+                    <button key={item.id} onClick={() => setIndice(i)} className={`h-2 rounded-full transition-all duration-500 hover:-translate-y-1 ${i === indice ? 'w-8 bg-acento' : 'w-2 bg-texto-secundario cursor-pointer'}`} />
                 ))}
             </div>
+
         </div>
     )
 }

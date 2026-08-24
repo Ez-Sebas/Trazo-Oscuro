@@ -30,12 +30,20 @@ export const Header = () => {
         <header className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${scrolled ? 'bg-fondo/80 backdrop-blur-sm' : 'bg-fondo'}`}>
             <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
                 <Link to="/" onClick={() => setMenuAbierto(false)}>
-                    <div className="flex items-center gap-2">
-                        <svg width="28" height="28" viewBox="0 0 60 60">
-                            <path d="M 10 15 L 50 15 M 30 15 L 30 45 L 15 55" fill="none" stroke="#F5F5F4" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-                            <circle cx="15" cy="55" r="3" fill="#B91C1C" />
+                    <div className="flex items-center">
+                        <svg className="w-36 h-auto sm:w-44 md:w-52 lg:w-220px" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg" aria-label="Trazo Oscuro">
+                            <g transform="translate(22, -4)">
+                                <path d="M 8 12 H 55" stroke="#1A1A1A" strokeWidth="10" strokeLinecap="round"/>
+                                <path d="M 8 12 H 55 M 31 12 V 38 L 20 50" fill="none" className="stroke-texto" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
+                                <circle cx="20" cy="50" r="4" className="fill-acento"/>
+                            </g>
+                            <text x="62" y="29" className="fill-texto" fontFamily="Georgia, serif" fontSize="20" fontWeight="600" letterSpacing="2">
+                                RAZO
+                            </text>
+                            <text x="62" y="49" className="fill-texto-secundario" fontFamily="Georgia, serif" fontSize="15" letterSpacing="3">
+                                OSCURO
+                            </text>
                         </svg>
-                        <span className="hidden md:flex text-texto font-serif text-xl tracking-wide">TRAZO OSCURO</span>
                     </div>
                 </Link>
 

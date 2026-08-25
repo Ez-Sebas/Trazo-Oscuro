@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
+import usuarioRoutes from "./routes/usuario.routes.js";
+import productoRoutes from "./routes/producto.routes.js";
+import servicioRoutes from "./routes/servicio.routes.js";
 
 dotenv.config();
 
@@ -19,6 +22,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/usuarios", usuarioRoutes);
+app.use("/api/v1/productos", productoRoutes);
+app.use("/api/v1/servicios", servicioRoutes);
 
 app.use((req, res) => {
     res.status(404).json({

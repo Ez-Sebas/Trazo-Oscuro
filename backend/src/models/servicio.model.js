@@ -13,6 +13,13 @@ export const buscarServicioPorId = async (id_servicio) => {
     return rows[0];
 };
 
+export const listarServiciosActivos = async () => {
+    const [rows] = await pool.execute(
+        "SELECT * FROM servicios WHERE estado = 'activo' ORDER BY id_servicio DESC"
+    );
+    return rows;
+};
+
 export const crearServicio = async (servicio) => {
     const { nombre, descripcion, precio, duracion_estimada } = servicio;
     const [result] = await pool.execute(

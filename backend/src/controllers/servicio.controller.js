@@ -1,6 +1,7 @@
 import {
     listarServicios,
     buscarServicioPorId,
+    listarServiciosActivos,
     crearServicio,
     actualizarServicio,
     cambiarEstadoServicio,
@@ -14,6 +15,22 @@ export const obtenerServicios = async (req, res) => {
     } catch (error) {
         console.error("Error al listar servicios:", error);
         return res.status(500).json({ success: false, message: "Error interno del servidor." });
+    }
+};
+
+export const obtenerServiciosActivos = async (req, res) => {
+    try {
+        const servicios = await listarServiciosActivos();
+        return res.status(200).json({
+            success: true,
+            servicios
+        });
+    } catch (error) {
+        console.error("Error al listar servicios activos:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error interno del servidor."
+        });
     }
 };
 

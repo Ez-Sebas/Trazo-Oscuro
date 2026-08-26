@@ -1,6 +1,7 @@
 import {
     listarProductos,
     buscarProductoPorId,
+    listarProductosActivos,
     crearProducto,
     actualizarProducto,
     cambiarEstadoProducto,
@@ -16,6 +17,22 @@ export const obtenerProductos = async (req, res) => {
         return res.status(500).json({ success: false, message: "Error interno del servidor." });
     }
 };
+
+export const obtenerProductosActivos = async (req, res) => {
+    try {
+        const productos = await listarProductosActivos();
+        return res.status(200).json({
+            success: true,
+            productos
+        });
+    } catch (error) {
+        console.error("Error al listar productos activos:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error interno del servidor."
+        });
+    }
+}
 
 export const registrarProducto = async (req, res) => {
     try {

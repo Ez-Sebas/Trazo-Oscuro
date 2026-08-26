@@ -20,8 +20,17 @@ export const Header = () => {
         navigate('/')
     }
 
+    const rutaPanel = () => {
+        if (!usuario) return '/'
+        if (usuario.rol === 'Administrador') return '/admin'
+        if (usuario.rol === 'Empleado') return '/empleado'
+        return '/cliente'
+    }
+
     const enlaces = [
         { to: '/', texto: 'Inicio' },
+        { to: '/productos', texto: 'Productos' },
+        { to: '/servicios', texto: 'Servicios' },
         { to: '/quienes-somos', texto: '¿Quiénes Somos?' },
         { to: '/contacto', texto: 'Contacto' },
     ]
@@ -56,8 +65,10 @@ export const Header = () => {
                 </nav>
 
                 {usuario ? (
-                    <div className=" hidden md:flex items-center gap-3">
-                        <span className="text-texto-secundario text-sm">Hola, {usuario.correo.split('@')[0]}</span>
+                    <div className="hidden md:flex items-center gap-3">
+                        <Link to={rutaPanel()} className="text-texto-secundario text-sm hover:text-acento transition-colors">
+                            Hola, {usuario.nombres}
+                        </Link>
                         <button onClick={manejarCerrarSesion} className="text-acento text-sm px-3 py-2 rounded-lg border border-acento hover:bg-acento hover:text-texto transition-all duration-300 cursor-pointer">
                             Cerrar sesión
                         </button>
@@ -67,6 +78,7 @@ export const Header = () => {
                         Iniciar sesión
                     </Link>
                 )}
+
                 <button onClick={() => setMenuAbierto(!menuAbierto)} className="md:hidden text-texto w-9 h-9 flex items-center justify-center cursor-pointer" aria-label="Abrir menú">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                         {menuAbierto ? (
@@ -78,7 +90,7 @@ export const Header = () => {
                 </button>
             </div>
 
-            <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuAbierto ? 'max-h-80' : 'max-h-0'}`}>
+            <div className={`md:hidden overflow-hidden transition-all duration-300 ${menuAbierto ? 'max-h-96' : 'max-h-0'}`}>
                 <nav className="flex flex-col px-6 pb-4 gap-1 bg-fondo border-t border-borde">
                     {enlaces.map((enlace) => (
                         <Link key={enlace.to} to={enlace.to} onClick={() => setMenuAbierto(false)} className="text-texto text-sm px-2 py-3 rounded-lg hover:text-acento transition-colors">
@@ -86,9 +98,14 @@ export const Header = () => {
                         </Link>
                     ))}
                     {usuario ? (
-                        <button onClick={manejarCerrarSesion} className="text-acento text-sm px-2 py-3 rounded-lg font-medium text-left cursor-pointer">
-                            Cerrar sesión
-                        </button>
+                        <>
+                            <Link to={rutaPanel()} onClick={() => setMenuAbierto(false)} className="text-texto text-sm px-2 py-3 rounded-lg hover:text-acento transition-colors">
+                                Hola, {usuario.nombres}
+                            </Link>
+                            <button onClick={manejarCerrarSesion} className="text-acento text-sm px-2 py-3 rounded-lg font-medium text-left cursor-pointer">
+                                Cerrar sesión
+                            </button>
+                        </>
                     ) : (
                         <Link to="/login" onClick={() => setMenuAbierto(false)} className="text-acento text-sm px-2 py-3 rounded-lg font-medium">
                             Iniciar sesión

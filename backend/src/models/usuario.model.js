@@ -83,3 +83,33 @@ export const cambiarEstadoUsuario = async (id_usuario, estado) => {
 export const eliminarUsuario = async (id_usuario) => {
     await pool.execute("DELETE FROM usuarios WHERE id_usuario = ?", [id_usuario]);
 };
+
+export const buscarUsuarioPorEmailExcluyendo = async (email, id_usuario) => {
+    const [rows] = await pool.execute(
+        "SELECT * FROM usuarios WHERE email = ? AND id_usuario != ? LIMIT 1",
+        [email, id_usuario]
+    );
+    return rows[0];
+};
+
+export const buscarUsuarioPorDocumentoExcluyendo = async (numero_documento, id_usuario) => {
+    const [rows] = await pool.execute(
+        "SELECT * FROM usuarios WHERE numero_documento = ? AND id_usuario != ? LIMIT 1",
+        [numero_documento, id_usuario]
+    );
+    return rows[0];
+};
+
+export const actualizarPerfilUsuario = async (id_usuario, datos) => {
+    const { nombres, apellidos, direccion, telefono, tipo_documento, numero_documento, email } = datos;
+    await pool.execute(
+        `UPDATE usuarios
+            SET nombres = ?, apellidos = ?, direccion = ?, telefono = ?, tipo_documento = ?, numero_documento = ?, email = ?
+            WHERE id_usuario = ?`,
+        [nombres, apellidos, direccion, telefono, tipo_documento, numero_documento, email, id_usuario]
+    );
+};
+
+export const cambiarRolUsuario = async (id_usuario, id_rol) => {
+    await pool.execute("UPDATE usuarios SET id_rol = ? WHERE id_usuario = ?", [id_rol, id_usuario]);
+};

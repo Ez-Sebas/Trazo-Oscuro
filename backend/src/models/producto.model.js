@@ -13,6 +13,13 @@ export const buscarProductoPorId = async (id_producto) => {
     return rows[0];
 };
 
+export const listarProductosActivos = async () => {
+    const [rows] = await pool.execute(
+        "SELECT * FROM productos WHERE estado = 'activo' ORDER BY id_producto DESC"
+    );
+    return rows
+}
+
 export const crearProducto = async (producto) => {
     const { nombre, descripcion, precio, stock } = producto;
     const [result] = await pool.execute(
